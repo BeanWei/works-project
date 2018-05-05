@@ -1,0 +1,13 @@
+Name,Margin,Unit,Result,Tolerance,Limits
+Spk FR,2.5000,dB,PASS,Tolerance curves,Floating Limits
+Spk THD,3.7000,dB,PASS,Tolerance curves,Absolute Limits
+Spk Rub & Buzz,0.9300,%,FAIL,Tolerance curves,Absolute Limits
+Check Missing Mic,1.0000,,PASS,Minimum,1.0
+Mic Seal L,2.0000,dB,PASS,Tolerance curves,Absolute Limits
+Mic Seal R,2.2000,dB,PASS,Tolerance curves,Absolute Limits
+Mic L Sensitivity,-39.0000,dB,PASS,Max/Min,-37.0/-42.0
+Mic L THD margin,1.4000,%,PASS,Tolerance curves,Absolute Limits
+Mic L FR,0.8000,dB,PASS,Tolerance curves,Floating Limits
+Mic R Sensitivity,-39.0000,dB,PASS,Max/Min,-37.0/-42.0
+Mic R THD margin,1.4000,%,PASS,Tolerance curves,Absolute Limits
+Mic R FR,1.0000,dB,PASS,Tolerance curves,Floating Limits
