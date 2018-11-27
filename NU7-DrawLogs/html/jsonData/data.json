@@ -1,0 +1,86 @@
+[
+    {
+        "name": "测试1",
+        "type": "line",
+        "symbol": "circle",
+        "symbolSize": 4,
+        "itemStyle": {
+            "normal": {
+                "color": "red",
+                "borderColor": "red"
+            }
+        },
+        "data": [
+            620,
+            182,
+            191,
+            534,
+            290,
+            330,
+            310,
+            220,
+            882,
+            191,
+            234,
+            590,
+            330,
+            10
+        ]
+    },
+    {
+        "name": "测试2",
+        "type": "line",
+        "symbol": "circle",
+        "symbolSize": 4,
+        "itemStyle": {
+            "normal": {
+                "color": "red",
+                "borderColor": "red"
+            }
+        },
+        "data": [
+            620,
+            182,
+            191,
+            534,
+            290,
+            330,
+            310,
+            220,
+            882,
+            191,
+            234,
+            590,
+            330,
+            10
+        ]
+    },
+    {
+        "name": "测试3",
+        "type": "line",
+        "symbol": "circle",
+        "symbolSize": 4,
+        "itemStyle": {
+            "normal": {
+                "color": "red",
+                "borderColor": "red"
+            }
+        },
+        "data": [
+            620,
+            182,
+            191,
+            534,
+            290,
+            330,
+            310,
+            220,
+            882,
+            191,
+            234,
+            590,
+            330,
+            10
+        ]
+    }
+]
