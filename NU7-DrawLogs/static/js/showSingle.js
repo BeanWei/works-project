@@ -1,47 +1,9 @@
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="utf-8" />  
-    <title>ECharts-基本线性图及其配置要求</title>  
-    <!-- ECharts单文件引入 -->
-<script src="./js/echarts.common.min.js"></script>
-<script src="./js/jquery-3.3.1.min.js"></script>
-<script src="./js/icon.js"></script> 
-</head>  
-<style>
-    input{
-        border: 5px solid #000;
-        padding: 7px 0px;
-        border-radius: 3px;
-        width: 80%;
-        margin-left: 10%;
-        margin-right: 10%;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
-    }
-    input:focus{
-            border-color: #66afe9;
-            outline: 0;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
-    }
-</style>
-<body>  
-    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-        <div id="box" style="height:600px;margin-left: 5%;margin-right: 5%;padding: 10px"></div>
-    </div>  
-    <input id="rule" type="text" placeholder="输入筛选规则然后点击上方按钮完成筛选">
-    <script>
-    // 获取到这个DOM节点，然后初始化
+function showSingleBtn() {
+    console.log("showSingleBtn is press")
+    $("#showAllBox").css('display', 'none')
+    $("#showSingleBox").css('display', 'block')
     $.getJSON("./jsonData/data.json", function (data) {
-        var selected = {};
-        for (var i in data) {
-            selected[data[i].name] = true;
-        }
-        var myChart = echarts.init(document.getElementById("box"));
+        var myChart = echarts.init(document.getElementById("showSingleBox"));
         myChart.setOption(option = {
             //标题
             title: {
@@ -58,8 +20,8 @@
                 orient: 'vertical',//'horizontal', // 'vertical'
                 x: 'right',
                 y: 'top',
-                //selectedMode: 'single',
-                selected: selected,
+                selectedMode: 'single',
+                //selected: selected,
                 width: 300,
                 align: 'auto',
                 borderColor: 'rgba(178,34,34,0.8)',
@@ -83,27 +45,10 @@
                 x:'center',
                 itemGap: 20,
                 feature: {
+                    dataZoom: {},
+                    dataView: {readOnly: false},
+                    restore: {},
                     saveAsImage: {},
-                    myShowCurves: {
-                        show: true,
-                        title: "是否显示所有曲线",
-                        icon: showCurvesIcon,
-                        onclick: function() {
-                            for (k in option.legend.selected) {
-                                option.legend.selected[k] = ! option.legend.selected[k];
-                                myChart.setOption(option);
-                            }
-                        }
-                    },
-                    myFliterCurves: {
-                        show: true,
-                        title: "数据筛选",
-                        icon: searchIcon,
-                        onclick: function() {
-                            alert("TODO ADD THE FUNCTION···")
-                        }
-                    },
-
                 }
             },
             //x轴信息样式
@@ -150,7 +95,5 @@
                 }
             })
         })
-    })  
-</script>
-</body>  
-</html>
+    }) 
+};
