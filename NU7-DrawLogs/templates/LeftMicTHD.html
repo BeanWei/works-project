@@ -1,0 +1,46 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="utf-8" />  
+    <title>🎷NU7-Audio©QCMC·AudioTeam</title>  
+<!-- 引入layui样式，！！！这里必须最先引用，不然会与echart冲突 -->
+<link rel="stylesheet" href="../static/css/layui.css" media="all">
+<!-- 引入layui组件 -->
+<script src="../static/plugins/layui.all.js"></script>
+<!-- ECharts单文件引入 -->
+<script src="../static/plugins/echarts.common.min.js"></script>
+<!-- 引入JQuery读取本地json文件中的数传传给echart -->
+<script src="../static/plugins/jquery-3.3.1.min.js"></script>
+<!-- 图标svg -->
+<script src="../static/plugins/icon.js"></script> 
+<!-- 操作区域的函数 -->
+<script src="../static/js/LeftMicTHD/showAll.js"></script> 
+<script src="../static/js/LeftMicTHD/showSingle.js"></script>
+<script src="../static/js/LeftMicTHD/showFilter.js"></script>
+<!-- Btn事件 -->
+<script type="text/javascript">
+    function showAllBtn() {
+        console.log("showAllBtn is press")
+        $("#showSingleBox").css('display', 'none')
+        $("#showAllBox").css('display', 'block')
+    };
+</script>
+</head>  
+<body>  
+    <!-- 展示所有数据的chart -->
+    <div id="showAllBox" style="height:600px; width: 100%;padding: 10px;"></div> 
+    <!-- 展示单个数据的chart -->
+    <div id="showSingleBox" style="height:600px;margin-left: 5%;margin-right: 5%;padding: 10px;display: none;"></div> 
+    <!-- 数据操作区域 -->
+    <fieldset class="layui-elem-field" style="margin-top: 7px;margin-left: 5%;margin-right: 5%;">
+        <legend>Toolkit</legend>
+        <div style="margin: 17px;">
+          <button class="layui-btn" id="showAllBtn" onclick="showAllBtn()">全部曲线</button>
+          <button class="layui-btn layui-btn-normal" id="showSingleBtn" onclick="showSingleBtn()">单一曲线</button>
+          <button class="layui-btn layui-btn-warm" id="filterBtn" onclick="filterBtn()">筛选曲线</button>
+          <button class="layui-btn layui-btn-danger">警告按钮</button>
+          <button class="layui-btn layui-btn-disabled">禁用按钮</button>
+        </div>
+    </fieldset>
+</body>  
+</html>
