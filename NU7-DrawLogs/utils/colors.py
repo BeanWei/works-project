@@ -20,7 +20,6 @@ colors = {
     "bigfootfeet": "#e88e5a",
     "bittersweet": "#fd7c6e",
     "bittersweetshimmer": "#bf4f51",
-    "black": "#000000",
     "blackcoralpearl": "#54626f",
     "blackshadows": "#bfafb2",
     "blastoffbronze": "#a57164",

@@ -14,15 +14,24 @@
 <!-- 图标svg -->
 <script src="../static/plugins/icon.js"></script> 
 <!-- 操作区域的函数 -->
-<script src="../static/js/SpkFundamental/showAll.js"></script> 
-<script src="../static/js/SpkFundamental/showSingle.js"></script>
-<script src="../static/js/SpkFundamental/showFilter.js"></script>
+<script src="../static/js/Common/config.js"></script>
+<script src="../static/js/Common/showAll.js"></script> 
+<script src="../static/js/Common/showSingle.js"></script>
+<script src="../static/js/Common/showFilter.js"></script>
+<script src="../static/js/SpkFundamental.js"></script>
 <!-- Btn事件 -->
 <script type="text/javascript">
     function showAllBtn() {
-        console.log("showAllBtn is press")
-        $("#showSingleBox").css('display', 'none')
-        $("#showAllBox").css('display', 'block')
+        $("#showSingleBox").css('display', 'none');
+        $("#showAllBox").css('display', 'block');
+        $("#seldialog").css('display', 'none');
+        $("#showSearchBox").css('display', 'none');
+    };
+    function filterBtn() {
+        $("#showSingleBox").css('display', 'none');
+        $("#showAllBox").css('display', 'none');
+        $("#seldialog").css('display', 'block');
+        $("#showSearchBox").css('display', 'none');
     };
 </script>
 </head>  
@@ -30,7 +39,47 @@
     <!-- 展示所有数据的chart -->
     <div id="showAllBox" style="height:600px; width: 100%;padding: 10px;"></div> 
     <!-- 展示单个数据的chart -->
-    <div id="showSingleBox" style="height:600px;margin-left: 5%;margin-right: 5%;padding: 10px;display: none;"></div> 
+    <div id="showSingleBox" style="height:600px;margin-left: 5%;margin-right: 5%;padding: 10px;display: none;"></div>
+    <!-- 展示数据筛选后的chart -->
+    <div id="showSearchBox" style="height:600px; width: 100%;padding: 10px;display: none;"></div> 
+    <!--筛选数据对话弹窗  -->
+    <div class="layui-row" id="seldialog" style="display: none;height: 600px;width: 100%; margin-bottom: 8px;padding: 10px;"> 
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>筛选规则-只支持单个规则筛选，如果输入多个则默认为填入的第一条规则</legend>
+        </fieldset>
+        <div class="layui-col-md10"> 
+            <form class="layui-form" id="addEmployeeForm"> 
+                <div class="layui-form-item"> 
+                    <label class="layui-form-label">模糊匹配：</label> 
+                    <div class="layui-input-block"> 
+                        <input type="text" id="softReg" class="layui-input"> 
+                    </div> 
+                </div> 
+                <div class="layui-form-item"> 
+                    <label class="layui-form-label">精确匹配：</label> 
+                    <div class="layui-input-block"> 
+                        <textarea id="exactReg" placeholder="输入完整的曲线名称，多个请按回车" class="layui-textarea"></textarea>
+                    </div> 
+                </div> 
+                <div class="layui-form-item"> 
+                    <label class="layui-form-label">Y轴范围：</label> 
+                    <div class="layui-input-inline" style="width: 200px;">
+                            <input type="text" id="minY" placeholder="最小值" autocomplete="off" class="layui-input">
+                    </div> 
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline" style="width: 200px;">
+                      <input type="text" id="maxY" placeholder="最大值" autocomplete="off" class="layui-input">
+                    </div>
+                </div> 
+                <div class="layui-form-item"> 
+                    <div class="layui-input-block"> 
+                        <button type="button" class="layui-btn layui-btn-normal" onclick="selectBtn()">选择匹配到的结果</button> 
+                        <button type="button" class="layui-btn layui-btn-normal" onclick="ignoreBtn()">过滤匹配到的结果</button> 
+                    </div> 
+                </div>
+            </form> 
+        </div> 
+    </div>
     <!-- 数据操作区域 -->
     <fieldset class="layui-elem-field" style="margin-top: 7px;margin-left: 5%;margin-right: 5%;">
         <legend>Toolkit</legend>
@@ -38,8 +87,7 @@
           <button class="layui-btn" id="showAllBtn" onclick="showAllBtn()">全部曲线</button>
           <button class="layui-btn layui-btn-normal" id="showSingleBtn" onclick="showSingleBtn()">单一曲线</button>
           <button class="layui-btn layui-btn-warm" id="filterBtn" onclick="filterBtn()">筛选曲线</button>
-          <button class="layui-btn layui-btn-danger">警告按钮</button>
-          <button class="layui-btn layui-btn-disabled">禁用按钮</button>
+          <button class="layui-btn layui-btn-danger"><a href="../NU7.html">主页</a></button>
         </div>
     </fieldset>
 </body>  
