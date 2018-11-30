@@ -44,28 +44,36 @@ function filterData(data, selectType) {
     };
     var result = new Array();
     for (var i in data) {
-        if (ruleType == 1) {
-
-        } else if (ruleType == 2) {
-            lineNameList = rule.split("\n")
-            if (selectType == "select") {
-                if (lineNameList.indexOf(data[i].name) != -1) {
+        //保留limit, 不做任何判断。
+        if (data[i].name.indexOf("Limit") != -1) {
+            result.push(data[i])
+        } else {
+            if (ruleType == 1) {
+                //这里模糊匹配暂用最简单的方法：判断曲线的名称字符内是否包含输入的字符
+                if (data[i].name.indexOf(rule) != -1) {
                     result.push(data[i])
                 }
-            } else if (selectType == "ignore") {
-                if (lineNameList.indexOf(data[i].name) == -1) {
-                    result.push(data[i])
+            } else if (ruleType == 2) {
+                lineNameList = rule.split("\n")
+                if (selectType == "select") {
+                    if (lineNameList.indexOf(data[i].name) != -1) {
+                        result.push(data[i])
+                    }
+                } else if (selectType == "ignore") {
+                    if (lineNameList.indexOf(data[i].name) == -1) {
+                        result.push(data[i])
+                    }
                 }
+                
+            } else if (ruleType == 3) {
+                range = rule.split(",")
+                minY = range[0]
+                maxY = range[1]
+                if (Math.min.apply(null, data[i].data) > minY && Math.max.apply(null, data[i].data) < maxY) {
+                    result.push(data[i])
+                }   
             }
-            
-        } else if (ruleType == 3) {
-            range = rule.split(",")
-            minY = range[0]
-            maxY = range[1]
-            if (Math.min.apply(null, data[i].data) > minY && Math.max.apply(null, data[i].data) < maxY) {
-                result.push(data[i])
-            }   
-        }
+        }     
     };
     return result
 };
