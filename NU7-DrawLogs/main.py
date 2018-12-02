@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 """
-# dev: python2
+# dev: python2/3
 # @Bean.Wei
 #
 # Read the Logs, make the json data files. Then open the html in browser!
@@ -11,13 +11,22 @@ import os
 import shutil
 import re
 import threading
+import random
+
+from utils.colors import colors
+from utils.limit import limit
 
 import logging
 logging.basicConfig(level = logging.INFO, format = "[%(asctime)s]%(levelname)s : %(message)s")
 logger = logging.getLogger(__name__)
 
 # define the json file template
-jsonTemp = '{"name": "%s","type": "line","symbol": "circle","symbolSize": 4,"itemStyle": {"normal": {"color": "%s"}},"data": [%s]}'
+jsonTemp = '{"name": "%s","type":"line","smooth":1,"symbol":"none","itemStyle":{"normal":{"color":"%s"}},"data":[%s]}'
+
+# choose wether need to add the Limit in the lines
+AddLimit = True
+# define the limit line Color
+LimitColor = "#000000"
 
 # logs dir: save the logs
 Logs_Dir = "./Logs"
@@ -52,6 +61,21 @@ LOGS_ITEM = [
     "Ultrasound_Spectrum_Noise_Power_Sum"
 ]
 
+# some items test values is from max to min, we need reverse it, so we must to define which item need it
+NeedReverseItems = [
+    "Left_Mic_FR_Smoothing",
+    "Left_Mic_Fundamental",
+    "Left_Mic_Seal_FR_Smoothing",
+    "Middle_Mic_FR_Smoothing",
+    "Middle_Mic_Fundamental",
+    "Middle_Mic_Seal_FR_Smoothing",
+    "Right_Mic_FR_Smoothing",
+    "Right_Mic_Fundamental",
+    "Right_Mic_Seal_FR_Smoothing",
+    "Spk_FR_Smoothing",
+    "Spk_Fundamental",
+]
+
 def main():
     init()
     logger.info("Start Read the Logs")
@@ -60,6 +84,7 @@ def main():
         logger.info("NOT FOUND THE LOGS, WILL EXIST")
         os._exit(0)
     logSet = setLogs(logs)  
+    # TODO: use the threading
     for k, v in logSet.items():
         makeJsonFiles(k, v)
 
@@ -110,9 +135,11 @@ def readSingleLog(file_path):
     return:
         a dict, {sn_title: test_value}    
     """    
-    # TODO: Protece the code: out off the range, check the test values length.
+    # TODO: need to check the test values length?
     with open(file_path) as fp:
         f = fp.readlines()
+        if len(f) < 3:
+            return None
         # remove the fist line=> yaxis infos, and the second line=> xaxis infos
         f = f[2:]
         logInfoDic = dict()
@@ -137,10 +164,53 @@ def makeJsonFiles(output_filename, input_logsname_list):
     jsonContainStr = "["
     for logname in input_logsname_list:
         logInfoDic = readSingleLog(os.path.join(Logs_Dir, logname))
+        if not logInfoDic:
+            continue
         for sninfo, testvalue in logInfoDic.items():
-            # TODO: make the random color to the line
-            item = jsonTemp % (sninfo, "green", testvalue)
+            if output_filename in NeedReverseItems:
+                ts = testvalue.split(",")
+                ts.reverse()
+                testvalue = ",".join(ts)
+            item = jsonTemp % (sninfo, random.choice(colors.values()), testvalue)
             jsonContainStr += item + ","    
+    # Add the limit
+    if AddLimit:
+        if output_filename == "Left_Mic_FR_Smoothing":
+            upper_limit_name = "Mic_L_Response_Upper_Limit"
+            lower_limit_name = "Mic_L_Response_Lower_Limit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","
+            jsonContainStr += jsonTemp % (lower_limit_name, LimitColor, limit[lower_limit_name]) + ","
+        elif output_filename == "Left_Mic_THD":
+            upper_limit_name = "Mic_L_THD_Upper_Limit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","
+        elif output_filename == "Middle_Mic_FR_Smoothing":
+            upper_limit_name = "Mic_M_Response_Upper_Limit"
+            lower_limit_name = "Mic_M_Response_Lower_Limit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","
+            jsonContainStr += jsonTemp % (lower_limit_name, LimitColor, limit[lower_limit_name]) + ","
+        elif output_filename == "Middle_Mic_THD":
+            upper_limit_name = "Mic_M_THD_Upper_Limit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","
+        elif output_filename == "Right_Mic_FR_Smoothing":
+            upper_limit_name = "Mic_R_Response_Upper_Limit"
+            lower_limit_name = "Mic_R_Response_Lower_Limit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","
+            jsonContainStr += jsonTemp % (lower_limit_name, LimitColor, limit[lower_limit_name]) + ","
+        elif output_filename == "Right_Mic_THD":
+            upper_limit_name = "Mic_R_THD_Upper_Limit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","    
+        elif output_filename == "Spk_FR_Smoothing":
+            upper_limit_name = "Spk_Response_Upper_Limit"
+            lower_limit_name = "Spk_Response_Lower_Limit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","
+            jsonContainStr += jsonTemp % (lower_limit_name, LimitColor, limit[lower_limit_name]) + ","
+        elif output_filename == "Spk_THD":
+            upper_limit_name = "Spk_THD_Upper_Limit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","
+        elif output_filename == "Spk_Rub&Buzz":
+            upper_limit_name = "Spk_Rub&Buzz_Upper_Limiit"
+            jsonContainStr += jsonTemp % (upper_limit_name, LimitColor, limit[upper_limit_name]) + ","          
+
     jsonContainStr = jsonContainStr.rstrip(",") + "]"
     # TODO: Need to check this way is OK?
     opt_fn = os.path.join(MakeJson_Dir, output_filename)
