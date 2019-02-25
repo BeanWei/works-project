@@ -8,4 +8,8 @@
 
     * Work_Drawing 批量性测试数据可视化
         - 技术栈：pyecharts
+
+    * DataAnalysis&VI 数据分析&可视化
+        - electron
+        ![DataAnalysis&VI](https://github.com/BeanWei/works-project/blob/master/DataAnalysis&VI/RELEASE/DataVI.PNG)
         
